@@ -13,6 +13,12 @@ from integrator import leapfrog_step
 from LaneEmden import polytrope_sphere
 from S3A import place_at_pericentre
 import matplotlib.pyplot as plt
+import os
+  
+os.makedirs("figures", exist_ok=True)
+
+
+
 
 def run_direct(pos, vel, t_end, dt):
     """Integrate bound debris; return each particle's energy and return time."""
@@ -36,7 +42,7 @@ def run_direct(pos, vel, t_end, dt):
     return E, t_return
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     
     offsets = polytrope_sphere(5000, u.r_star, 1.5, np.random.default_rng(42))
     pos, vel = place_at_pericentre(offsets)
@@ -50,6 +56,7 @@ if __name__ == "main":
     plt.loglog(T_pred[done] * u.T_UNIT_DAYS, t_return[done] * u.T_UNIT_DAYS, ".")
     plt.xlabel("predicted return time (days)")
     plt.ylabel("measured return time (days)")
+    plt.savefig("figures/return_time.png", dpi=300)
     plt.show()
 
     
@@ -76,6 +83,7 @@ if __name__ == "main":
     plt.xlabel("time since disruption (days)")
     plt.ylabel(r"$dM/dt$ ($M_\odot$/yr)")
     plt.legend()
+    plt.savefig("figures/dM-dt_plot.png", dpi=300)
     plt.show()
 
     E_all = specific_energy(pos, vel)            # all particles, bound and unbound
@@ -85,4 +93,5 @@ if __name__ == "main":
     plt.hist(E_all / dE, bins=60, density=True)
     plt.xlabel(r"$E / \Delta E$")
     plt.ylabel(r"$dM/dE$ (normalised)")
+    plt.savefig("figures/dM-dE_plot.png", dpi=300)
     plt.show()

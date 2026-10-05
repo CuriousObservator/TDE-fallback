@@ -13,6 +13,12 @@ from integrator import leapfrog_step
 from LaneEmden import polytrope_sphere
 from S3A import place_at_pericentre
 import matplotlib.pyplot as plt
+from TDE_2 import uniform_sphere
+
+import os
+
+os.makedirs("figures", exist_ok=True)
+
 
 
 def run_tests():
@@ -42,10 +48,7 @@ def run_tests():
     print("parabolic: E / (GM/r_p) =", E_test / (u.G * u.M_bh / u.r_p), "(expect ~0)")
     print("parabolic: distance", np.linalg.norm(pos[0]), "(should be far beyond r_p)")
 
-if __name__ == "__main__":
-    run_tests()
 
-#%%
 
 
 def fallback_from_energies(E, n_bins=40):
@@ -61,46 +64,51 @@ def fallback_from_energies(E, n_bins=40):
     centres = np.sqrt(edges[:-1] * edges[1:])
     return centres, dMdt
 
-offsets = polytrope_sphere(5000, u.r_star, 1.5, np.random.default_rng(42))
-pos, vel = place_at_pericentre(offsets)
-E = specific_energy(pos, vel)
 
-t, dMdt = fallback_from_energies(E)
-plt.loglog(t, dMdt, "o-", label="n = 1.5 polytrope")
 
-# ref = t > 3 * t.min()
-# plt.loglog(t[ref], dMdt[ref][0] * (t[ref] / t[ref][0])**(-5/3), "k--", label=r"$t^{-5/3}$")
-
-late = t > 10 * t.min()
-A = np.mean(dMdt[late] * t[late]**(5/3))
-plt.loglog(t[late], A * t[late]**(-5/3), "k--", label=r"$t^{-5/3}$")
-
-plt.xlabel("time since disruption (days)")
-plt.ylabel(r"$dM/dt$ ($M_\odot$/yr)")
-plt.legend()
-plt.show()
-#%%
-from TDE_2 import uniform_sphere
-rng = np.random.default_rng(42)
-N = 100000
-stars = {
-    "uniform": uniform_sphere(N, u.r_star, rng),
-    "n = 1.5": polytrope_sphere(N, u.r_star, 1.5, rng),
-    "n = 3":   polytrope_sphere(N, u.r_star, 3, rng),
-}
-
-plt.figure()
-for label, offsets in stars.items():
+if __name__ == "__main__":
+    run_tests()
+    offsets = polytrope_sphere(5000, u.r_star, 1.5, np.random.default_rng(42))
     pos, vel = place_at_pericentre(offsets)
-    t, dMdt = fallback_from_energies(specific_energy(pos, vel))
-    plt.loglog(t, dMdt, label=label)
+    E = specific_energy(pos, vel)
+    
+    t, dMdt = fallback_from_energies(E)
+    plt.loglog(t, dMdt, "o-", label="n = 1.5 polytrope")
+    
+    # ref = t > 3 * t.min()
+    # plt.loglog(t[ref], dMdt[ref][0] * (t[ref] / t[ref][0])**(-5/3), "k--", label=r"$t^{-5/3}$")
+    
+    late = t > 10 * t.min()
+    A = np.mean(dMdt[late] * t[late]**(5/3))
+    plt.loglog(t[late], A * t[late]**(-5/3), "k--", label=r"$t^{-5/3}$")
+    
+    plt.xlabel("time since disruption (days)")
+    plt.ylabel(r"$dM/dt$ ($M_\odot$/yr)")
+    plt.legend()
+    plt.savefig("figures/dM-dt_plot.png", dpi=300)
+    plt.show()
+    rng = np.random.default_rng(42)
+    N = 100000
+    stars = {
+        "uniform": uniform_sphere(N, u.r_star, rng),
+        "n = 1.5": polytrope_sphere(N, u.r_star, 1.5, rng),
+        "n = 3":   polytrope_sphere(N, u.r_star, 3, rng),
+    }
 
-late = t > 10 * t.min()                      # anchored to the last curve (n = 3)
-A = np.mean(dMdt[late] * t[late]**(5/3))
-plt.loglog(t[late], 2 * A * t[late]**(-5/3), "k--", label=r"$t^{-5/3}$")
+    plt.figure()
+    for label, offsets in stars.items():
+        pos, vel = place_at_pericentre(offsets)
+        t, dMdt = fallback_from_energies(specific_energy(pos, vel))
+        plt.loglog(t, dMdt, label=label)
 
-plt.xlabel("time since disruption (days)")
-plt.ylabel(r"$dM/dt$ ($M_\odot$/yr)")
-plt.legend()
-plt.savefig("figures/fallback_comparison.png", dpi=200)
-plt.show()
+    late = t > 10 * t.min()                      # anchored to the last curve (n = 3)
+    A = np.mean(dMdt[late] * t[late]**(5/3))
+    plt.loglog(t[late], 2 * A * t[late]**(-5/3), "k--", label=r"$t^{-5/3}$")
+
+    plt.xlabel("time since disruption (days)")
+    plt.ylabel(r"$dM/dt$ ($M_\odot$/yr)")
+    plt.legend()
+    plt.savefig("figures/fallback_comparison.png", dpi=200)
+    plt.show()
+
+

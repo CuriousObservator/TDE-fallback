@@ -56,6 +56,7 @@ if __name__ == "__main__":
     plt.loglog(T_pred[done] * u.T_UNIT_DAYS, t_return[done] * u.T_UNIT_DAYS, ".")
     plt.xlabel("predicted return time (days)")
     plt.ylabel("measured return time (days)")
+    plt.tight_layout()
     plt.savefig("figures/return_time.png", dpi=300)
     plt.show()
 

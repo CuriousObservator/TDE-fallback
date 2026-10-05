@@ -20,7 +20,7 @@ This is a self-study project written in October 2026 to learn the basic physics 
 
 Values are read off the plot for $M_{\rm bh} = 10^6\,M_\odot$, a Sun-like star and $\beta = 1$.
 
-**Direct simulation agrees with the energy-based prediction.** Integrating the bound debris with a leapfrog scheme and recording each particle's return to pericentre reproduces the analytic curve in every bin out to 369 days. Individual return times agree with the Keplerian prediction to 0.23%.
+**Direct simulation agrees with the energy-based prediction.** Integrating the bound debris with a leapfrog scheme and recording each particle's return to pericentre reproduces the analytic curve in every bin out to 369 days. Across the 1,231 particles that return within 369 days, individual return times agree with the Keplerian prediction to better than 1% (maximum 0.82%, median 0.50%).
 
 ![Direct simulation against the energy-based curve](figures/dM-dt_plot.png)
 
@@ -62,6 +62,7 @@ The curve is a pure $t^{-5/3}$ power law only where $dM/dE$ is flat, which holds
 | --- | --- | --- |
 | Lane–Emden surface, $n = 1$ | 3.1411 | $\pi$ |
 | Lane–Emden surface, $n = 1.5$ | 3.6531 | 3.65375 |
+| Lane–Emden surface, $n = 3$ | 6.8961 | 6.897 |
 | $-\xi^2\theta'$ at surface, $n = 1.5$ | 2.71406 | 2.714 |
 | Sampled radial profile, uniform sphere | follows $3r^2/R^3$ | |
 | Sampled radial profile, polytrope | follows $\xi^2\theta^n$ | |
@@ -69,7 +70,7 @@ The curve is a pure $t^{-5/3}$ power law only where $dM/dE$ is flat, which holds
 | Energy range ($n = 1.5$, $N = 5000$) | −88.5 to +88.6 | within $\pm\Delta E = \pm 100$ |
 | Circular orbit, relative energy error after one period | $1.2 \times 10^{-14}$ | machine precision |
 | Parabolic orbit, distance at $t = 100\,t_p$ | 3460 | 3458 (analytic) |
-| Direct vs predicted return time, maximum difference | 0.23% | consistent with integrator energy error |
+| Direct vs predicted return time, 1,231 particles | 0.23% for the earliest returns, rising to 0.82% at 369 days | fixed integrator energy offset, larger relative to weakly bound orbits |
 
 ## Running the code
 
@@ -90,6 +91,7 @@ Figures are written to `figures/`.
 | File | Contents |
 | --- | --- |
 | `TDE_units.py` | Units, parameters and derived scales |
+| `TDE.py` | First rejection sampler, superseded by `TDE_2.py` |
 | `TDE_2.py` | Uniform sphere sampler |
 | `LaneEmden.py` | Lane–Emden solver and polytrope sampler |
 | `S3A.py` | Placement of the star at pericentre |
@@ -123,4 +125,3 @@ Figures are written to `figures/`.
 ## Author
 
 Malapaka Venkata Ratna Abhishek
-

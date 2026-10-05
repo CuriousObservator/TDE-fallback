@@ -71,9 +71,14 @@ if __name__ == "__main__":
     E, t_return = run_direct(pos, vel, t_end=t_end, dt=0.01 * u.t_p)
     T_pred = 2 * np.pi * u.G * u.M_bh / (2 * np.abs(E))**1.5
     done = ~np.isnan(t_return)
+    rel_diff = np.abs(t_return[done] / T_pred[done] - 1)
     print("returned:", done.sum(), "of", len(E))
+    print("max relative difference:", rel_diff.max())
+    print("median relative difference:", np.median(rel_diff))
     
     bins = np.logspace(np.log10(45), np.log10(t_end * u.T_UNIT_DAYS), 20)
+    
+    
     centres = np.sqrt(bins[:-1] * bins[1:])
     m_particle = u.M_star / N
     

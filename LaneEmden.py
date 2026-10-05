@@ -42,13 +42,14 @@ if __name__ == "__main__":
     # Test against the analytic n = 1 solution first
     xi, theta, phi = solve_lane_emden(1)
     print("n = 1 surface:", xi[-1], "(expect pi)")
-    plt.plot(xi, theta, label="RK4, n = 1.5")
+    plt.figure()
+    plt.plot(xi, theta, label="RK4, n = 1")
     plt.plot(xi, np.sin(xi)/xi, "k--", label=r"$\sin\xi/\xi$")
 
     xi, theta, phi = solve_lane_emden(1.5)
     print("n = 1.5 surface:", xi[-1], "(expect ~3.654)")
     print("-xi^2 phi at surface:", -xi[-1]**2 * phi[-1], "(expect ~2.714)")
-    plt.plot(xi, theta, label="RK4, n = 1")
+    plt.plot(xi, theta, label="RK4, n = 1.5")
 
     plt.xlabel(r"$\xi$")
     plt.ylabel(r"$\theta$")

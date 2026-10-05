@@ -22,11 +22,11 @@ Values are read off the plot for $M_{\rm bh} = 10^6\,M_\odot$, a Sun-like star a
 
 **Direct simulation agrees with the energy-based prediction.** Integrating the bound debris with a leapfrog scheme and recording each particle's return to pericentre reproduces the analytic curve in every bin out to 369 days. Individual return times agree with the Keplerian prediction to 0.23%.
 
-![Direct simulation against the energy-based curve](figures/direct_vs_energy.png)
+![Direct simulation against the energy-based curve](figures/dM-dt_plot.png)
 
 **Energy distribution.** The fallback curve is the energy distribution $dM/dE$ mapped through Kepler's third law.
 
-![dM/dE of the debris](figures/dMdE.png)
+![dM/dE of the debris](figures/dM-dE.png)
 
 ## Physics
 

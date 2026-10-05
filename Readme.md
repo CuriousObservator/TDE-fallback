@@ -26,7 +26,7 @@ Values are read off the plot for $M_{\rm bh} = 10^6\,M_\odot$, a Sun-like star a
 
 **Energy distribution.** The fallback curve is the energy distribution $dM/dE$ mapped through Kepler's third law.
 
-![dM/dE of the debris](figures/dM-dE.png)
+![dM/dE of the debris](figures/dM-dE_plot.png)
 
 ## Physics
 

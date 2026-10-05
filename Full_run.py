@@ -50,8 +50,10 @@ if __name__ == "__main__":
     
     T_pred = 2 * np.pi * u.G * u.M_bh / (2 * np.abs(E))**1.5
     done = ~np.isnan(t_return)
-    print("returned:", done.sum())
-    print("max relative difference:", np.max(np.abs(t_return[done] / T_pred[done] - 1)))
+    rel_diff = np.abs(t_return[done] / T_pred[done] - 1)
+    print("returned:", done.sum(), "of", len(E))
+    print("max relative difference:", rel_diff.max())
+    print("median relative difference:", np.median(rel_diff))
     
     plt.loglog(T_pred[done] * u.T_UNIT_DAYS, t_return[done] * u.T_UNIT_DAYS, ".")
     plt.xlabel("predicted return time (days)")

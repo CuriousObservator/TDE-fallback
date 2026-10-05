@@ -50,6 +50,10 @@ if __name__ == "__main__":
     print("n = 1.5 surface:", xi[-1], "(expect ~3.654)")
     print("-xi^2 phi at surface:", -xi[-1]**2 * phi[-1], "(expect ~2.714)")
     plt.plot(xi, theta, label="RK4, n = 1.5")
+    
+    xi, theta, phi = solve_lane_emden(3)
+    print("n = 3 surface:", xi[-1], "(expect ~6.897)")
+    plt.plot(xi, theta, label="RK4, n = 3")
 
     plt.xlabel(r"$\xi$")
     plt.ylabel(r"$\theta$")
